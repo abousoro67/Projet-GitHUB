@@ -1,0 +1,45 @@
+h1 {
+
+    color : aqua ;
+
+    font : center ;
+
+  }
+
+  p {
+
+    color : darkblue ;
+
+    font : small ;
+
+  }
+  .famille{
+    color:darkolivegreen
+  }
+  body { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: cadetblue;
+  } 
+ .images { 
+    display: flex;
+    animation-duration: 3s;
+    animation-name: mesImages;
+    animation-iteration-count: infinite;
+  }
+  @keyframes mesImages
+  0% {
+    transform: translateX(0);
+}
+  25% {
+  transform: translateX(-640px);
+}
+   50% {
+  transform: translateX(-1288px);
+}
+  #slider {
+    width: 640px;
+    overflow: auto;
+  }

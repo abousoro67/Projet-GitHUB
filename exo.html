@@ -1,0 +1,173 @@
+
+
+    <h1>Bienvenue sur votre boutique de vente</h1>
+    <h1>Formulaire de Contact</h1>
+    <form id="formulaireContact">
+        <label for="prenom">Prénom:</label>
+        <input type="text" id="prenom" name="prenom" required>
+
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" required>
+
+        <label for="pays">Pays:</label>
+        <select id="pays" name="pays" required>
+            <option value="">Sélectionner un pays</option>
+        </select>
+
+        <label for="ville">Ville:</label>
+        <select id="ville" name="ville" required>
+            <option value="">Sélectionner une ville</option>
+        </select>
+
+        <label for="telephone">Numéro de téléphone:</label>
+        <input type="tel" id="telephone" name="telephone" pattern="[0-9]+" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit">Envoyer</button>
+    </form>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const listePays = document.getElementById("pays");
+            const listeVilles = document.getElementById("ville");
+
+            // Charger la liste des pays via l'API RestCountries
+            console.log("Chargement des pays...");
+            fetch("https://restcountries.com/v3.1/all")
+                .then(reponse => {
+                    if (!reponse.ok) {
+                        throw new Error("Erreur lors de la récupération des pays");
+                    }
+                    return reponse.json();
+                })
+                .then(donnees => {
+                    console.log("Pays chargés avec succès :", donnees);
+                    donnees.sort((a, b) => a.name.common.localeCompare(b.name.common));
+                    donnees.forEach(pays => {
+                        const option = document.createElement("option");
+                        option.value = pays.name.common;
+                        option.textContent = pays.name.common;
+                        listePays.appendChild(option);
+               
+                });
+
+            // Charger les villes après la sélection d'un pays
+            listePays.addEventListener("change", () => {
+                listeVilles.innerHTML = '<option value="">Sélectionner une ville</option>'; // Réinitialiser la liste des villes
+
+                const paysSelectionne = listePays.value;
+                console.log("Pays sélectionné :", paysSelectionne);
+
+                if (paysSelectionne) {
+                    // Requête POST pour récupérer les villes
+                    fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ country: paysSelectionne }) // Envoi du nom du pays
+                    })
+                    .then(reponse => {
+                        if (!reponse.ok) {
+                            throw new Error("Erreur lors de la récupération des villes");
+                        }
+                        return reponse.json();
+                    })
+                    .then(donnees => {
+                        console.log("Villes reçues :", donnees);
+                        if (donnees.data && donnees.data.length > 0) {
+                            donnees.data.forEach(ville => {
+                                const option = document.createElement("option");
+                                option.value = ville;
+                                option.textContent = ville;
+                                listeVilles.appendChild(option);
+                            });
+                        } else {
+                            console.warn("Aucune ville trouvée pour ce pays.");
+                        }
+                    })
+                    .catch(erreur => {
+                        console.error("Erreur lors du chargement des villes :", erreur);
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+<main>
+    <!-- Section Accueil -->
+    <section id="accueil">
+        <h1>Bienvenue sur mon portfolio</h1>
+        <p>Découvrez mon parcours, mes réalisations et contactez-moi.</p>
+    </section>
+
+    <!-- Section À propos -->
+    <section id="a-propos">
+        <h2>À propos de moi</h2>
+        <p>Je suis passionné par le développement web et les nouvelles technologies.</p>
+        <section id="a-propos">
+    <iframe width="560" height="315" 
+    src="https://youtu.be/iWZmdoY1aTE?si=9CbZfw9MXAVjms7L" 
+    frameborder="000" 
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+</section>
+
+    </section>
+
+    <!-- Section Travail -->
+    <section id="travail">
+        <h2>Mes Travaux</h2>
+        <ul>
+            <li>Projet 1</li>
+            <li>Projet 2</li>
+            <li>Projet 3</li>
+        </ul>
+    </section>
+
+    <!-- Section CV -->
+    <section id="cv">
+        <h2>Mon CV</h2>
+        <h2>Apprenant en développement web à GOMYCODE </h2>
+        <table border="1">
+            <tr>
+                <th>Compétence</th>
+                <th>Niveau</th>
+            </tr>
+            <tr>
+                <td>HTML</td>
+                <td></td>
+            </tr>
+            <tr>
+            <td>JS</td>
+            <td>Avancé</td>
+            </tr>
+            <tr>
+                <td>CSS</td>
+                <td>Intermédiaire</td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Section Contact -->
+    <section id="contact">
+        <h2>Contactez-moi</h2>
+        <form action="submit.html" method="post">
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" required><br><br>
+
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="message">Message :</label><br>
+            <textarea id="message" name="message" rows="5" cols="30" required></textarea><br><br>
+
+            <button type="submit">Envoyer</button>
+        </form>
+    </section>
+</main>
